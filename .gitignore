@@ -1,0 +1,4 @@
+.idea
+.vscode
+fastapi_app/logs
+**/__pycache__/
