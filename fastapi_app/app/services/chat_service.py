@@ -4,7 +4,6 @@ from fastapi_app.app.utils.logger import get_logger
 from fastapi_app.app.core.config import settings
 from typing import AsyncGenerator
 from fastapi import HTTPException
-import os
 import httpx
 
 logger = get_logger(__name__)
