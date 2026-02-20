@@ -1,0 +1,107 @@
+######################
+### ch 6.2         ###
+### Runpod 서버 구성 ###
+######################
+# uv & 라이브러리 설치
+curl -LsSf https://astral.sh/uv/install.sh | sh
+cd /workspace
+uv init
+uv add vllm==0.11.0 hf_transfer transformers==4.57.6
+mkdir model_repository
+
+# 모델 로드 
+uv run vllm serve openai/gpt-oss-20b \
+--download-dir /workspace/model_repository \
+--api-key myvllmserver
+
+# 로드 상태 확인
+curl http://localhost:8000/v1/models -H "Authorization: Bearer myvllmserver" 
+
+# 메시지 요청
+curl -X POST https://{복사한 주소}/v1/chat/completions \
+-H "Content-Type: application/json" -H "Authorization: Bearer myvllmserver" \
+-d '{  
+        "messages": [{"role": "user", "message":"안녕, 너는 누구야?"}],  
+        "temperature": 0.7
+    }'
+
+
+######################
+### ch 6.3         ###
+### OpenWebUI 구성  ###
+######################
+
+uv run vllm serve openai/gpt-oss-20b \
+--download-dir /workspace/model_repository \
+--api-key myvllmserver
+
+
+######################
+### ch 6.4         ###
+### curl 요청하기    ###
+######################
+# 모델 로드
+uv run vllm serve openai/gpt-oss-20b \
+--download-dir /workspace/model_repository \
+--api-key myvllmserver
+
+# 과제
+curl -X POST http://localhost:8000/v1/chat/completions \
+-H "Content-Type:application/json" \
+-H "Authorization: Bearer myvllmserver" \
+-d ' {"messages": [{"role": "other", "content": "안녕"}]}'
+
+
+######################
+### ch 9.2         ###
+### curl 요청하기    ###
+######################
+# uv & 라이브러리 설치
+curl -LsSf https://astral.sh/uv/install.sh | sh
+cd /workspace
+uv init
+uv add vllm==0.11.0 hf_transfer transformers==4.57.6
+mkdir model_repository
+
+# 모델 로드 (gpt-oss-20b)
+uv run vllm serve openai/gpt-oss-20b \
+--download-dir /workspace/model_repository \
+--api-key myvllmserver \
+--tool-call-parser openai \
+--enable-auto-tool-choice \
+--tensor-parallel-size 2 \
+--gpu-memory-utilization 0.8
+
+
+
+######################
+### ch 11.1        ###
+### 멀티 모델 로드하기 ###
+######################
+# gpt-oss-20b 모델 로드
+uv run vllm serve openai/gpt-oss-20b \
+--api-key myvllmserver \
+--download-dir /workspace \
+--tool-call-parser openai \
+--gpu-memory-utilization 0.45 \
+--port 8000
+
+# Qwen/Qwen3-4B-Instruct-2507 
+uv run vllm serve Qwen/Qwen3-4B-Instruct-2507 \
+--api-key myvllmserver \
+--download-dir /workspace \
+--tool-call-parser qwen \
+--enable-auto-tool-choice \
+--gpu-memory-utilization 0.45 \
+--port 8001
+
+######################
+### ch 11.3        ###
+### Prefix Caching ###
+######################
+uv run vllm serve openai/gpt-oss-20b \
+--api-key myvllmserver \
+--download-dir /workspace/model_repository \
+--tool-call-parser openai \
+--enable-auto-tool-choice \
+--no-enable-prefix-caching
