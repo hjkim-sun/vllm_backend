@@ -17,14 +17,11 @@ uv run vllm serve openai/gpt-oss-20b \
 # 로드 상태 확인
 curl http://localhost:8000/v1/models -H "Authorization: Bearer myvllmserver" 
 
-# 메시지 요청
-curl -X POST https://{복사한 주소}/v1/chat/completions \
--H "Content-Type: application/json" -H "Authorization: Bearer myvllmserver" \
--d '{  
-        "messages": [{"role": "user", "message":"안녕, 너는 누구야?"}],  
-        "temperature": 0.7
-    }'
+# 메시지 요청 (맥북)
+curl -X POST https://{runpod 주소}/v1/chat/completions -H "Content-Type: application/json" -H "Authorization: Bearer myvllmserver" -d '{"messages": [{"role": "user", "content":"안녕, 너는 누구야?"}], "temperature": 0.7}'
 
+# 메시지 요청 (window 커맨드)
+curl -X POST https://{runpod 주소}/v1/chat/completions -H "Content-Type: application/json" -H "Authorization: Bearer myvllmserver" -d "{\"messages\": [{\"role\": \"user\", \"content\":\"안녕, 너는 누구야?\"}], \"temperature\": 0.7}"
 
 ######################
 ### ch 6.3         ###
