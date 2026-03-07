@@ -43,10 +43,47 @@ uv run vllm serve openai/gpt-oss-20b \
 --api-key myvllmserver
 
 # 과제
-curl -X POST http://localhost:8000/v1/chat/completions \
--H "Content-Type:application/json" \
--H "Authorization: Bearer myvllmserver" \
--d ' {"messages": [{"role": "other", "content": "안녕"}]}'
+curl -X POST http://localhost:8000/v1/chat/completions -H "Content-Type:application/json" -H "Authorization: Bearer myvllmserver" -d ' {"messages": [{"role": "other", "content": "안녕"}]}'
+
+
+######################
+### ch 7.1         ###
+### Tool Calling   ###
+######################
+# 모델 로드 (기본))
+uv run vllm serve openai/gpt-oss-20b \
+--download-dir /workspace/model_repository \
+--api-key myvllmserver
+
+# 모델 로드(tool-call-parser 옵션 추가)
+uv run vllm serve openai/gpt-oss-20b \
+--download-dir /workspace/model_repository \
+--api-key myvllmserver \
+--enable-auto-tool-choice \
+--tool-call-parser openai
+
+
+######################
+### ch 7.2         ###
+### 실시간 날씨조회    ###
+######################
+# 모델 로드
+uv run vllm serve openai/gpt-oss-20b \
+--download-dir /workspace/model_repository \
+--api-key myvllmserver \
+--enable-auto-tool-choice \
+--tool-call-parser openai
+
+
+######################
+### ch 7.3         ###
+### 온라인 서빙과 툴   ###
+######################
+# 모델 로드
+uv run vllm serve openai/gpt-oss-20b \
+--download-dir /workspace/model_repository \
+--api-key myvllmserver \
+--tool-call-parser openai
 
 
 ######################
