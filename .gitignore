@@ -3,3 +3,4 @@
 **/.DS_Store
 fastapi_app/logs
 **/__pycache__/
+**/.DS_Store
