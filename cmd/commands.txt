@@ -94,8 +94,8 @@ uv run vllm serve openai/gpt-oss-20b \
 cd /workspace
 git clone https://github.com/hjkim-sun/vllm_server.git
 cd vllm_server
-setup_monitoring.sh
-startup_monitoring.sh
+./setup_monitoring.sh
+./startup_monitoring.sh
 
 # 모델 로드
 uv run vllm serve openai/gpt-oss-20b \
