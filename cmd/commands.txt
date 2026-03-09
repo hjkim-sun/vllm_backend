@@ -87,6 +87,24 @@ uv run vllm serve openai/gpt-oss-20b \
 
 
 ######################
+### ch 8.1         ###
+### vLLM 모니터링    ###
+######################
+# git clone 
+cd /workspace
+git clone https://github.com/hjkim-sun/vllm_server.git
+cd vllm_server
+setup_monitoring.sh
+startup_monitoring.sh
+
+# 모델 로드
+uv run vllm serve openai/gpt-oss-20b \
+--download-dir /workspace/model_repository \
+--api-key myvllmserver \
+--tool-call-parser openai
+
+
+######################
 ### ch 9.2         ###
 ### curl 요청하기    ###
 ######################
