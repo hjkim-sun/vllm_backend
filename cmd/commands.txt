@@ -105,6 +105,47 @@ uv run vllm serve openai/gpt-oss-20b \
 
 
 ######################
+### ch 8.2         ###
+### vLLM Bench     ###
+######################
+# git clone 
+cd /workspace
+git clone https://github.com/hjkim-sun/vllm_server.git
+cd vllm_server
+./setup_monitoring.sh
+./startup_monitoring.sh
+
+# vLLM 벤치 시작
+uv run vllm bench serve \
+--backend openai-chat \
+--model openai/gpt-oss-20b \
+--endpoint /v1/chat/completions \
+--dataset-name hf \
+--dataset-path mgoin/mlperf-inference-llama2-data \
+--hf-split train \
+--num-prompts 1000 \
+--max-concurrency 60
+
+
+######################
+### ch 8.3         ###
+### Jmeter 성능테스트 ###
+######################
+# git clone 
+cd /workspace
+git clone https://github.com/hjkim-sun/vllm_server.git
+cd vllm_server
+./setup_monitoring.sh
+./startup_monitoring.sh
+
+# 모델 로드
+uv run vllm serve openai/gpt-oss-20b \
+--download-dir /workspace/model_repository \
+--api-key myvllmserver \
+--tool-call-parser openai
+
+
+######################
 ### ch 9.2         ###
 ### curl 요청하기    ###
 ######################
