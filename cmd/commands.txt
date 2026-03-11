@@ -108,12 +108,21 @@ uv run vllm serve openai/gpt-oss-20b \
 ### ch 8.2         ###
 ### vLLM Bench     ###
 ######################
-# git clone 
+# 라이브러리 설치 
 cd /workspace
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv init
+uv add vllm==0.11.0 transformers==4.57.6 torch==2.8.0 hf_transfer datasets==4.7.0
+
+# git clone 및 프로메테우스/그라파나 설치
 git clone https://github.com/hjkim-sun/vllm_server.git
 cd vllm_server
 ./setup_monitoring.sh
 ./startup_monitoring.sh
+
+# 모델 로드
+uv run vllm serve openai/gpt-oss-20b \
+--download-dir /workspace/model_repository 
 
 # vLLM 벤치 시작
 uv run vllm bench serve \
@@ -123,16 +132,21 @@ uv run vllm bench serve \
 --dataset-name hf \
 --dataset-path mgoin/mlperf-inference-llama2-data \
 --hf-split train \
---num-prompts 1000 \
---max-concurrency 60
+--num-prompts 2000 \
+--max-concurrency 100
 
 
 ######################
 ### ch 8.3         ###
 ### Jmeter 성능테스트 ###
 ######################
-# git clone 
+# 라이브러리 설치 
 cd /workspace
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv init
+uv add vllm==0.11.0 transformers==4.57.6 torch==2.8.0 hf_transfer
+
+# git clone 및 프로메테우스/그라파나 설치
 git clone https://github.com/hjkim-sun/vllm_server.git
 cd vllm_server
 ./setup_monitoring.sh
