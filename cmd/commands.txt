@@ -161,8 +161,11 @@ uv run vllm serve openai/gpt-oss-20b \
 
 ######################
 ### ch 9.2         ###
-### curl 요청하기    ###
+### Parallelism    ###
 ######################
+# GPU 구조 확인
+nvidia-smi topo -m 
+
 # uv & 라이브러리 설치
 curl -LsSf https://astral.sh/uv/install.sh | sh
 cd /workspace
@@ -170,13 +173,22 @@ uv init
 uv add vllm==0.11.0 transformers==4.57.6 torch==2.8.0 hf_transfer 
 mkdir model_repository
 
-# 모델 로드 (gpt-oss-20b)
+# 모델 로드 (Tensor Parallel)
 uv run vllm serve openai/gpt-oss-20b \
 --download-dir /workspace/model_repository \
 --api-key myvllmserver \
 --tool-call-parser openai \
 --enable-auto-tool-choice \
 --tensor-parallel-size 2 \
+--gpu-memory-utilization 0.8
+
+# 모델 로드 (Pipeline Parallel)
+uv run vllm serve openai/gpt-oss-20b \
+--download-dir /workspace/model_repository \
+--api-key myvllmserver \
+--tool-call-parser openai \
+--enable-auto-tool-choice \
+--pipeline-parallel-size 2 \
 --gpu-memory-utilization 0.8
 
 
