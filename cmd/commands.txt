@@ -163,26 +163,14 @@ uv run vllm serve openai/gpt-oss-20b \
 ### ch 9.2         ###
 ### Parallelism    ###
 ######################
-# GPU 구조 확인
-nvidia-smi topo -m 
-
 # uv & 라이브러리 설치
 curl -LsSf https://astral.sh/uv/install.sh | sh
 cd /workspace
 uv init
-uv add vllm==0.11.0 transformers==4.57.6 torch==2.8.0 hf_transfer 
-mkdir model_repository
+uv add vllm==0.12.0 transformers==4.57.6 torch==2.9.0 hf_transfer 
+git clone https://github.com/hjkim-sun/vllm_server.git
 
-# 모델 로드 (Tensor Parallel)
-uv run vllm serve openai/gpt-oss-20b \
---download-dir /workspace/model_repository \
---api-key myvllmserver \
---tool-call-parser openai \
---enable-auto-tool-choice \
---tensor-parallel-size 2 \
---gpu-memory-utilization 0.8
-
-# 모델 로드 (Pipeline Parallel)
+# Pipeline Parallel 
 uv run vllm serve openai/gpt-oss-20b \
 --download-dir /workspace/model_repository \
 --api-key myvllmserver \
@@ -191,6 +179,23 @@ uv run vllm serve openai/gpt-oss-20b \
 --pipeline-parallel-size 2 \
 --gpu-memory-utilization 0.8
 
+# Data Parallel 
+uv run vllm serve openai/gpt-oss-20b \
+--download-dir /workspace/model_repository \
+--api-key myvllmserver \
+--tool-call-parser openai \
+--enable-auto-tool-choice \
+--data-parallel-size 2 \
+--gpu-memory-utilization 0.8
+
+# Tensor Parallel 
+uv run vllm serve openai/gpt-oss-20b \
+--download-dir /workspace/model_repository \
+--api-key myvllmserver \
+--tool-call-parser openai \
+--enable-auto-tool-choice \
+--tensor-parallel-size 2 \
+--gpu-memory-utilization 0.8
 
 
 ######################
