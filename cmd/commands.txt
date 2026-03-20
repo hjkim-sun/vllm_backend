@@ -199,33 +199,32 @@ uv run vllm serve openai/gpt-oss-20b \
 
 
 ######################
-### ch 11.1        ###
+### ch 10.1        ###
 ### 멀티 모델 로드하기 ###
 ######################
 # gpt-oss-20b 모델 로드
 uv run vllm serve openai/gpt-oss-20b \
+--download-dir /workspace/model_repository \
 --api-key myvllmserver \
---download-dir /workspace \
 --tool-call-parser openai \
 --gpu-memory-utilization 0.45 \
 --port 8000
 
-# Qwen/Qwen3-4B-Instruct-2507 
-uv run vllm serve Qwen/Qwen3-4B-Instruct-2507 \
+# Qwen/Qwen3.5-4B 
+uv run vllm serve Qwen/Qwen3-4B-Instruct-2507  \
+--download-dir /workspace/model_repository \
 --api-key myvllmserver \
---download-dir /workspace \
---tool-call-parser qwen \
+--tool-call-parser qwen3_coder \
 --enable-auto-tool-choice \
 --gpu-memory-utilization 0.45 \
---port 8001
+--port 8010
 
 ######################
-### ch 11.3        ###
+### ch 10.3        ###
 ### Prefix Caching ###
 ######################
 uv run vllm serve openai/gpt-oss-20b \
---api-key myvllmserver \
 --download-dir /workspace/model_repository \
+--api-key myvllmserver \
 --tool-call-parser openai \
---enable-auto-tool-choice \
 --no-enable-prefix-caching
