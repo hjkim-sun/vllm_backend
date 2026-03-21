@@ -219,12 +219,21 @@ uv run vllm serve Qwen/Qwen3-4B-Instruct-2507  \
 --gpu-memory-utilization 0.45 \
 --port 8010
 
+
 ######################
-### ch 10.3        ###
-### Prefix Caching ###
+### ch 10.4        ###
+### 추측 디코딩       ###
 ######################
+curl -LsSf https://astral.sh/uv/install.sh | sh
+cd /workspace
+uv init
+uv add vllm==0.18.0 transformers==4.57.6 torch==2.10.0 hf_transfer 
+git clone https://github.com/hjkim-sun/vllm_server.git
+
 uv run vllm serve openai/gpt-oss-20b \
 --download-dir /workspace/model_repository \
 --api-key myvllmserver \
 --tool-call-parser openai \
---no-enable-prefix-caching
+--gpu-memory-utilization 0.85 \
+--speculative-config '{"method": "eagle3", "model": "amazon/GPT-OSS-20B-P-EAGLE", "num_speculative_tokens": 3, "parallel_drafting": true}'
+
